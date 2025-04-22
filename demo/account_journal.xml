@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+
+    <record id="main_journal_customers_fx" model="account.journal">
+        <field name="name">Customers FX</field>
+        <field name="code">CFX</field>
+        <field name="type">sale</field>
+        <field name="company_id" ref="base.main_company" />
+        <field name="default_account_id" ref="main_200_00_000" />
+        <field name="refund_sequence" eval="True" />
+    </record>
+
+    <record id="main_journal_vendors_nf" model="account.journal">
+        <field name="name">Vendors NF</field>
+        <field name="code">VNF</field>
+        <field name="type">purchase</field>
+        <field name="company_id" ref="base.main_company" />
+        <field name="default_account_id" ref="main_501_01_000" />
+        <field name="refund_sequence" eval="True" />
+    </record>
+
+    <record id="main_journal_principal_cash" model="account.journal">
+        <field name="name">Principal Cash</field>
+        <field name="code">PC01</field>
+        <field name="type">cash</field>
+        <field name="company_id" ref="base.main_company" />
+        <field name="default_account_id" ref="main_101_01_001" />
+        <field name="suspense_account_id" ref="main_102_01_000" />
+        <field name="profit_account_id" ref="main_704_23_002" />
+        <field name="loss_account_id" ref="main_703_21_002" />
+    </record>
+
+    <record id="demo_journal_customers_fx" model="account.journal">
+        <field name="name">Customers FX</field>
+        <field name="code">CFX</field>
+        <field name="type">sale</field>
+        <field name="company_id" ref="demo_company" />
+        <field name="default_account_id" ref="demo_200_00_000" />
+        <field name="refund_sequence" eval="True" />
+    </record>
+
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_move_operation_user,Full access on account.move.opeation to accountant grp,model_account_move_operation,account.group_account_user,1,1,1,1
+access_account_move_operation_action_user,Full access on account.move.operation.action to accountant grp,model_account_move_operation_action,account.group_account_user,1,1,1,1
+access_account_move_operation_line_user,Full access on account.move.operation.line to accountant grp,model_account_move_operation_line,account.group_account_user,1,1,1,1
+access_account_move_operation_type_user,Full access on account.move.operation.type to accountant grp,model_account_move_operation_type,account.group_account_user,1,1,1,1

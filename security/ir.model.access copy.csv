@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_move_operation_user,Full access on account.move.opeation to accountant grp,model_account_move_operation,account.group_account_user,1,1,1,1
+access_account_move_operation_line_user,Full access on account.move.operation.line to accountant grp,model_account_move_operation_line,account.group_account_user,1,1,1,1
+access_account_move_operation_type_user,Full access on account.move.operation.type to accountant grp,model_account_move_operation_type,account.group_account_user,1,1,1,1
+access_account_move_operation_action_user,Full access on account.move.operation.action to accountant grp,model_account_move_operation_action,account.group_account_user,1,1,1,1
+access_account_move_operation_partner_user,Full access on account.move.operation.partner to accountant grp,model_account_move_operation_partner,account.group_account_user,1,1,1,1
+access_account_move_operation_payment_user,Full access on account.move.operation.payment to accountant grp,model_account_move_operation_payment,account.group_account_user,1,1,1,1
+access_account_move_operation_reconcile_user,Full access on account.move.operation.reconcile to accountant grp,model_account_move_operation_reconcile,account.group_account_user,1,1,1,1
+access_account_move_operation_operation_user,Full access on account.move.operation.operation to accountant grp,model_account_move_operation_operation,account.group_account_user,1,1,1,1
+access_account_bank_statement_operation_user,Full access on account.bank.statement.operation to accountant grp,model_account_bank_statement_operation,account.group_account_user,1,1,1,1

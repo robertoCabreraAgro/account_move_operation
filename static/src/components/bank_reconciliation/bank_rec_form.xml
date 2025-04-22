@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-inherit="account_accountant.BankRecRecordFormButtonsHeaderLeft" t-inherit-mode="extension">
+        <xpath expr="//div" position="inside">
+            <!-- <button
+                name="button_operation"
+                string="Operation"
+                class="btn btn-secondary"
+                type="object"
+                accesskey="o"
+            /> -->
+            <button accesskey="o" class="btn btn-secondary" t-on-click="(ev) => this.actionOperation()">
+                <span>Operation</span>
+            </button>
+        </xpath>
+    </t>
+</templates>

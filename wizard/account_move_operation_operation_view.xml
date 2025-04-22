@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="account_move_operation_operation_form" model="ir.ui.view">
+        <field name="model">account.move.operation.operation</field>
+        <field name="arch" type="xml">
+            <form string="Company for Operation Action">
+                <group name="main">
+                    <group>
+                        <field name="diff_company_id" required="1" options="{'no_open': True, 'no_create': True}" />
+                        <field name="line_id" invisible="1" />
+                        <field name="available_company_ids" invisible="1" />
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_create_operation" string="Create" type="object" class="btn-primary" />
+                    <button special="cancel" string="Cancel" class="btn-default" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="account_move_operation_operation_action" model="ir.actions.act_window">
+        <field name="name">Select Company for new Operation</field>
+        <field name="res_model">account.move.operation.operation</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+    </record>
+
+</odoo>
