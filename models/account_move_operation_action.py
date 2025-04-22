@@ -27,8 +27,8 @@ class AccountMoveOperationActions(models.Model):
     )
     sequence = fields.Integer(default=10)
     company_id = fields.Many2one(
-        "res.company",
-        "Company",
+        comodel_name="res.company",
+        string="Company",
         default=lambda self: self.env.company,
         # domain="[('id', '=?', type_company_id)]"
     )
@@ -44,7 +44,7 @@ class AccountMoveOperationActions(models.Model):
         index=True,
     )
     template_id = fields.Many2one(
-        "account.move.template",
+        comodel_name="account.move.template",
         string="Move Template",
     )
     operation_type_ids = fields.Many2many("account.move.operation.type")
