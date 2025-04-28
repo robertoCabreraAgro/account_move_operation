@@ -49,14 +49,18 @@
                     <notebook>
                         <page string="Operations">
                             <field name="action_ids" mode="list,form">
-                                <list editable="bottom" string="Actions"
+                                <list string="Actions"
                                     default_order="sequence, id">
-                                    <field name="operation_type_id" invisible="1" />
-                                    <field name="company_id" invisible="1" />
+                                    <field name="operation_type_id" column_invisible="1" />
+                                    <field name="company_id" column_invisible="1" />
                                     <field name="sequence" widget="handle" />
                                     <field name="name" />
                                     <field name="action" />
                                     <field name="template_id" readonly="action != 'move'" />
+                                    <field name="diff_partner"
+                                        column_invisible="not parent.diff_partner" />
+                                    <field name="multicompany"
+                                        column_invisible="not parent.multicompany" />
                                 </list>
                                 <form>
                                     <sheet>
@@ -67,7 +71,10 @@
                                             </group>
                                             <group>
                                                 <field name="template_id" />
-                                                <field name="company_id" invisible="1" />
+                                                <field name="diff_partner"
+                                                    invisible="not parent.diff_partner" />
+                                                <field name="multicompany" 
+                                                    invisible="not parent.multicompany" />
                                             </group>
                                         </group>
                                     </sheet>

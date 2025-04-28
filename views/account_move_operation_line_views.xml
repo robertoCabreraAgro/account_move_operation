@@ -25,7 +25,14 @@
                     type="object"
                     class="oe_stat_button"
                     icon="fa-file-text-o"
-                    invisible="not move_id and not st_line_id and not payment_id and not created_operation_id and action != 'info'"
+                    invisible="state != 'done' or not move_id"
+                />
+                <button
+                    name="action_view_document_pay"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-money"
+                    invisible="state != 'done' or not payment_id"
                 />
             </list>
         </field>

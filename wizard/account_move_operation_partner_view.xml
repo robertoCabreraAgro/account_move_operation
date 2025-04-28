@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="account_move_operation_partner_form" model="ir.ui.view">
         <field name="model">account.move.operation.partner</field>
@@ -6,12 +6,14 @@
             <form string="Partner for Operation Action">
                 <group name="main">
                     <group>
-                        <field name="partner_id" required="1" options="{'no_open': True, 'no_create': True}" />
+                        <field name="partner_id" required="1"
+                            options="{'no_open': True, 'no_create': True}" />
                         <field name="line_id" invisible="1" />
                     </group>
                 </group>
                 <footer>
-                    <button name="action_open_wizard" string="Next" type="object" class="btn-primary" />
+                    <button name="action_open_wizard" string="Next" type="object"
+                        class="btn-primary" />
                     <button special="cancel" string="Cancel" class="btn-default" />
                 </footer>
             </form>

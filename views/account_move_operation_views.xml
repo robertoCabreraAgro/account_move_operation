@@ -93,21 +93,36 @@
                             <field name="reference" />
                         </group>
                         <group name="main-right">
+                            <field name="from_bank_statement" invisible="1" />
+                            <field name="diff_partner" invisible="1" />
                             <field
                                 name="partner_id"
+                                required="1"
                                 readonly="state in ['in_progress', 'done', 'cancel']"
                                 options="{'no_open': True, 'no_create': True}"
+                            />
+                            <field
+                                name="diff_partner_id"
                                 required="1"
+                                readonly="state in ['in_progress', 'done', 'cancel']"
+                                options="{'no_open': True, 'no_create': True}"
+                                invisible="not diff_partner"
+                            />
+                            <field
+                                name="multicompany_id"
+                                required="1"
+                                readonly="state in ['in_progress', 'done', 'cancel']"
+                                options="{'no_open': True, 'no_create': True}"
+                                invisible="not multicompany"
                             />
                             <field
                                 name="st_line_id"
-                                options="{'no_open': True, 'no_create': True}"
                                 required="from_bank_statement"
+                                options="{'no_open': True, 'no_create': True}"
                                 readonly="state in ['in_progress', 'done', 'cancel']"
                             />
                             <field name="amount" force_save="1"
                                 readonly="state != 'draft' or st_line_id" />
-                            <field name="from_bank_statement" invisible="1" />
                         </group>
                     </group>
                     <notebook>

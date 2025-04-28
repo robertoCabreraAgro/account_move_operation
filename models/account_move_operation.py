@@ -1,6 +1,5 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools.safe_eval import safe_eval
 
 
 class AccountMoveOperation(models.Model):
@@ -28,12 +27,35 @@ class AccountMoveOperation(models.Model):
         string="Partner",
         domain=["|", ("parent_id", "=", False), ("is_company", "=", True)],
     )
+    diff_partner_id = fields.Many2one(
+        comodel_name="res.partner",
+        string="Diff Partner",
+        domain=["|", ("parent_id", "=", False), ("is_company", "=", True)],
+    )
+    target_company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Target Company",
+    )
     operation_type_id = fields.Many2one(
         comodel_name="account.move.operation.type",
         string="Type",
         required=True,
-        domain="[('company_id', '=', company_id), ('sub_operation', '=', False)]",
+        domain="[('company_id', 'in', (company_id, False)), ('sub_operation', '=', False)]",
         index=True,
+    )
+    diff_partner = fields.Boolean(
+        related="operation_type_id.diff_partner",
+    )
+    multicompany = fields.Boolean(
+        related="operation_type_id.multicompany",
+    )
+    multicompany_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Company",
+        default=lambda self: self.env.company,
+        readonly=True,
+        index=True,
+        help="Leave this field empty if this route is shared between all companies",
     )
     st_line_id = fields.Many2one(
         comodel_name="account.bank.statement.line",
@@ -63,8 +85,12 @@ class AccountMoveOperation(models.Model):
     )
     reference = fields.Char(copy=False)
     amount = fields.Monetary(currency_field="currency_id")
-    from_bank_statement = fields.Boolean(related="operation_type_id.from_bank_statement")
-    line_ids = fields.One2many("account.move.operation.line", "operation_id", readonly=True)
+    from_bank_statement = fields.Boolean(
+        related="operation_type_id.from_bank_statement"
+    )
+    line_ids = fields.One2many(
+        "account.move.operation.line", "operation_id", readonly=True
+    )
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -73,7 +99,9 @@ class AccountMoveOperation(models.Model):
                 self = self.sudo().with_company(vals["company_id"])
             if vals.get("name", _("New")) == _("New"):
                 seq_date = (
-                    fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals["date"]))
+                    fields.Datetime.context_timestamp(
+                        self, fields.Datetime.to_datetime(vals["date"])
+                    )
                     if "date" in vals
                     else None
                 )
@@ -88,7 +116,8 @@ class AccountMoveOperation(models.Model):
             self.update(
                 {
                     "partner_id": self.st_line_id.partner_id.id or self.partner_id.id,
-                    "currency_id": self.st_line_id.currency_id.id or self.currency_id.id,
+                    "currency_id": self.st_line_id.currency_id.id
+                    or self.currency_id.id,
                     "amount": self.st_line_id.amount,
                 }
             )
@@ -106,8 +135,10 @@ class AccountMoveOperation(models.Model):
         self.ensure_one()
         if not self.partner_id:
             raise UserError(_("Please set a partner before starting operation."))
+
         if self.state != "draft":
             return
+
         self._create_lines()
         self.state = "in_progress"
 
@@ -115,6 +146,7 @@ class AccountMoveOperation(models.Model):
         self.ensure_one()
         if self.state in ["done", "cancel"]:
             return
+
         self.state = "cancel"
         self.line_ids.action_cancel()
 
@@ -122,12 +154,14 @@ class AccountMoveOperation(models.Model):
         self.ensure_one()
         if self.state != "in_progress":
             return
+
         self.state = "done"
 
     def action_next_step(self):
         self.ensure_one()
         if self.state != "in_progress":
             return
+
         return self._get_next_action()
 
     def action_open_bank_statement_line(self):
@@ -136,8 +170,8 @@ class AccountMoveOperation(models.Model):
     def _create_lines(self):
         line = self.env["account.move.operation.line"]
         vals_list = []
-        for rule in self.operation_type_id.action_ids:
-            vals_list.append(self._get_line_vals(rule))
+        for action in self.operation_type_id.action_ids:
+            vals_list.append(self._get_line_vals(action))
         for vals in vals_list:
             if line:
                 vals["orig_line_id"] = line.id
@@ -151,16 +185,18 @@ class AccountMoveOperation(models.Model):
             "action": rule.action,
             "state": "waiting",
             "template_id": rule.template_id.id,
-            "journal_id": rule.journal_id.id,
             "operation_id": self.id,
             "date_last_document": rule.date_last_document,
             "diff_partner": rule.diff_partner,
             "action_id": rule.id,
+            "multicompany": rule.multicompany,
         }
         return vals
 
     def _get_next_action(self):
-        in_progress_line = self.line_ids.filtered(lambda line: line.state == "in_progress")[:1]
+        in_progress_line = self.line_ids.filtered(
+            lambda line: line.state == "in_progress"
+        )[:1]
         if in_progress_line:
             operation = in_progress_line.created_operation_id
             if operation and operation.company_id != self.env.company:
@@ -171,10 +207,13 @@ class AccountMoveOperation(models.Model):
                         operation.company_id.name,
                     )
                 )
+
             return in_progress_line.action_view_document()
+
         nxt_line = self.line_ids.filtered(lambda line: line.state == "ready")
         if not nxt_line:
             raise UserError(_("There is no available action to execute."))
+
         context = self._context.copy()
         context.update(
             {
