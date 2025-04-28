@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_move_operation_from_move_form" model="ir.ui.view">
+        <field name="name">account.move.operation.from.move.form</field>
+        <field name="model">account.move.operation.from.move</field>
+        <field name="arch" type="xml">
+            <form string="Create Operation from Journal Entry">
+                <div attrs="{'invisible': [('show_warning', '=', False)]}">
+                    <field name="warning_message" nolabel="1"/>
+                </div>
+                
+                <field name="show_warning" invisible="1"/>
+                
+                <group>
+                    <group>
+                        <field name="move_id" invisible="1"/>
+                        <field name="move_type" invisible="1"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="partner_id"/>
+                        <field name="amount"/>
+                        <field name="ref"/>
+                        <field name="operation_type_id" 
+                            options="{'no_create': True, 'no_create_edit': True}"
+                            placeholder="Select an operation type"/>
+                    </group>
+                </group>
+                
+                <group string="Operation Steps Preview" attrs="{'invisible': [('operation_type_id', '=', False)]}">
+                    <field name="operation_preview_ids" nolabel="1">
+                        <tree editable="bottom" create="0" delete="0">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                            <field name="action"/>
+                            <field name="template_id" optional="show"/>
+                            <field name="status" decoration-muted="status == 'pending'" 
+                                decoration-success="status == 'completed'" 
+                                decoration-info="status == 'origin'" 
+                                widget="badge"/>
+                        </tree>
+                    </field>
+                </group>
+                
+                <group string="Already Completed Templates" attrs="{'invisible': [('operation_type_id', '=', False)]}">
+                    <p class="text-muted">Select templates that are already completed manually or in previous operations</p>
+                    <field name="completed_template_ids" nolabel="1" 
+                        widget="many2many_tags" 
+                        options="{'no_create': True, 'no_create_edit': True}"/>
+                </group>
+                
+                <footer>
+                    <button name="action_create_operation" string="Create Operation" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_account_move_operation_from_move" model="ir.actions.act_window">
+        <field name="name">Create Operation from Journal Entry</field>
+        <field name="res_model">account.move.operation.from.move</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">form</field>
+    </record>
+    
+    <!-- Menú para el asistente de creación de operaciones desde asientos -->
+    <menuitem id="menu_account_move_operation_from_move"
+              name="Create Operation from Entry"
+              action="action_account_move_operation_from_move"
+              parent="account.menu_finance_entries"
+              sequence="16"/>
+</odoo> 

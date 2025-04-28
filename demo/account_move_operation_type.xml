@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+
+    <!-- Cash Return -->
+    <record id="operation_type_cash_return" model="account.move.operation.type">
+        <field name="name">Cash Return</field>
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="operation_action_cash_return_1" model="account.move.operation.action">
+        <field name="operation_type_id" ref="operation_type_cash_return" />
+        <field name="name">Customer Invoice</field>
+        <field name="action">move</field>
+        <field name="template_id" ref="template_cash_return_customer_invoice" />
+    </record>
+
+    <record id="operation_action_cash_return_2" model="account.move.operation.action">
+        <field name="operation_type_id" ref="operation_type_cash_return" />
+        <field name="name">Reconcile payment to customer invoice</field>
+        <field name="action">reconcile</field>
+    </record>
+
+    <record id="operation_action_cash_return_3" model="account.move.operation.action">
+        <field name="operation_type_id" ref="operation_type_cash_return" />
+        <field name="name">Vendor Bill</field>
+        <field name="action">move</field>
+        <field name="template_id" ref="template_cash_return_vendor_bill" />
+        <field name="date_last_document" eval="True" />
+    </record>
+
+    <record id="operation_action_cash_return_4" model="account.move.operation.action">
+        <field name="operation_type_id" ref="operation_type_cash_return" />
+        <field name="name">Vendor Bill Payment</field>
+        <field name="action">pay</field>
+        <field name="journal_id" ref="main_journal_principal_cash" />
+    </record>
+
+    <!-- Cash Return Multicompany -->
+    <record id="operation_type_cash_return_multicompany" model="account.move.operation.type">
+        <field name="name">Cash Return Multicompany - MAIN</field>
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="demo_operation_type_cash_return_multicompany" model="account.move.operation.type">
+        <field name="name">Cash Return Multicompany - DEMO</field>
+        <field name="company_id" ref="demo_company" />
+    </record>
+
+    <record id="operation_action_cash_return_multicompany_1" model="account.move.operation.action">
+        <field name="operation_type_id" ref="operation_type_cash_return_multicompany" />
+        <field name="name">Create Operation on other company</field>
+        <field name="action">operation</field>
+        <field name="operation_type_ids" eval="[Command.set([ref('demo_operation_type_cash_return_multicompany')])]" />
+    </record>
+
+    <record id="operation_action_cash_return_multicompany_1_1" model="account.move.operation.action">
+        <field name="operation_type_id" ref="demo_operation_type_cash_return_multicompany" />
+        <field name="name">Customer Invoice</field>
+        <field name="action">move</field>
+        <field name="template_id" ref="template_cash_return_multicompany_customer_invoice" />
+    </record>
+
+    <!-- <record id="operation_action_cash_return_multicompany_1_2" model="account.move.operation.action">
+        <field name="operation_type_id" ref="demo_operation_type_cash_return_multicompany" />
+        <field name="name">Reconcile payment to customer invoice</field>
+        <field name="action">reconcile</field>
+    </record> -->
+
+    <record id="operation_action_cash_return_multicompany_3" model="account.move.operation.action">
+        <field name="operation_type_id" ref="operation_type_cash_return_multicompany" />
+        <field name="name">Vendor Bill</field>
+        <field name="action">move</field>
+        <field name="template_id" ref="template_cash_return_multicompany_vendor_bill" />
+        <field name="date_last_document" eval="True" />
+    </record>
+
+    <record id="operation_action_cash_return_multicompany_4" model="account.move.operation.action">
+        <field name="operation_type_id" ref="operation_type_cash_return_multicompany" />
+        <field name="name">Vendor Bill Payment</field>
+        <field name="action">pay</field>
+        <field name="journal_id" ref="main_journal_principal_cash" />
+    </record>
+
+    <!-- Cash Return Manual -->
+    <record id="operation_type_cash_return_manual" model="account.move.operation.type">
+        <field name="name">Cash Return</field>
+        <field name="company_id" ref="base.main_company" />
+    </record>
+
+    <record id="operation_action_cash_return_manual_1" model="account.move.operation.action">
+        <field name="operation_type_id" ref="operation_type_cash_return_manual" />
+        <field name="name">Customer Invoice</field>
+        <field name="action">move</field>
+        <field name="template_id" ref="template_cash_return_customer_invoice" />
+        <field name="sequence">1</field>
+        <field name="auto" eval="False" />
+    </record>
+
+    <record id="operation_action_cash_return_manual_2" model="account.move.operation.action">
+        <field name="operation_type_id" ref="operation_type_cash_return_manual" />
+        <field name="name">Reconcile payment to customer invoice</field>
+        <field name="action">reconcile</field>
+        <field name="sequence">2</field>
+        <field name="auto" eval="False" />
+    </record>
+
+    <record id="operation_action_cash_return_manual_3" model="account.move.operation.action">
+        <field name="operation_type_id" ref="operation_type_cash_return_manual" />
+        <field name="name">Vendor Bill</field>
+        <field name="action">move</field>
+        <field name="template_id" ref="template_cash_return_vendor_bill" />
+        <field name="date_last_document" eval="True" />
+        <field name="sequence">3</field>
+        <field name="auto" eval="False" />
+    </record>
+
+    <record id="operation_action_cash_return_manual_4" model="account.move.operation.action">
+        <field name="operation_type_id" ref="operation_type_cash_return_manual" />
+        <field name="name">Vendor Bill Payment</field>
+        <field name="action">pay</field>
+        <field name="journal_id" ref="main_journal_principal_cash" />
+        <field name="sequence">4</field>
+        <field name="auto" eval="False" />
+    </record>
+
+</odoo>

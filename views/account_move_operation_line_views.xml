@@ -57,10 +57,14 @@
                         <group name="main-right">
                             <field name="orig_line_id" invisible="not orig_line_id" />
                             <field name="dest_line_id" invisible="not dest_line_id" />
-                            <field name="st_line_id" invisible="not st_line_id" />
-                            <field name="move_id" invisible="not move_id" />
-                            <field name="payment_id" invisible="not payment_id" />
-                            <field name="created_operation_id" invisible="not created_operation_id" />
+                            <field name="st_line_id" />
+                            <field name="move_id" />
+                            <field name="payment_id" />
+                            <field name="created_operation_id" />
+                            <field name="date_last_document" />
+                            <field name="diff_partner" />
+                            <field name="multicompany" />
+                            <field name="skip_auto_process" />
                         </group>
                     </group>
                 </sheet>

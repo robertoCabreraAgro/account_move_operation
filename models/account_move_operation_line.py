@@ -71,6 +71,13 @@ class AccountMoveOperationLine(models.Model):
         help="Enables use of a different partner than the one set on the operation",
     )
     multicompany = fields.Boolean(string="Is Multicompany")
+    skip_auto_process = fields.Boolean(
+        string="Skip Auto Process",
+        default=False,
+        help="If enabled, this line will not be automatically processed when creating "
+             "operations from existing entries. Useful for templates that are already "
+             "executed manually or in previous operations.",
+    )
 
     @api.depends("orig_line_id.dest_line_id")
     def _compute_orig_line(self):

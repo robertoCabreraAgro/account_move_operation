@@ -19,8 +19,11 @@
         "views/account_move_operation_action_views.xml",
         "views/account_move_operation_views.xml",
         "views/account_move_operation_line_views.xml",
+        "views/account_move_views.xml",
         # # "views/bank_rec_widget_views.xml",
         # # Wizard
+        "wizard/account_move_operation_operation_view.xml",
+        "wizard/account_move_operation_from_move_view.xml",
         # "wizard/account_invoice_template_run_view.xml",
         # "wizard/account_move_operation_partner_view.xml",
         # "wizard/account_move_operation_payment_view.xml",
