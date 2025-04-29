@@ -167,9 +167,4 @@
         action="account_move_operation_action"
         sequence="400" />
 
-    <menuitem id="menu_account_move_operation"
-              name="Operations"
-              action="account_move_operation_action"
-              parent="account.menu_finance_entries"
-              sequence="15"/>
 </odoo>

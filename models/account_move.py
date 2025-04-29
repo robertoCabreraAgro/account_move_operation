@@ -1,9 +1,28 @@
-from odoo import models, fields, _
-from odoo.exceptions import ValidationError
+# models/account_move.py (updated version)
+from odoo import models, fields, api, _
 
 
 class AccountMove(models.Model):
     _inherit = "account.move"
+
+    operation_line_ids = fields.One2many(
+        "account.move.operation.line",
+        "move_id",
+        string="Operation Lines",
+        readonly=True,
+    )
+    
+    operation_id = fields.Many2one(
+        "account.move.operation",
+        string="Source Operation",
+        compute="_compute_operation_id",
+        store=True,
+    )
+    
+    @api.depends('operation_line_ids.operation_id')
+    def _compute_operation_id(self):
+        for move in self:
+            move.operation_id = move.operation_line_ids[:1].operation_id.id
 
     def action_post(self):
         opertation_line_obj = self.env["account.move.operation.line"]
@@ -15,40 +34,32 @@ class AccountMove(models.Model):
             if line:
                 line.action_done()
         return res
-        
-    def action_create_operation_from_move(self):
-        """Crear una operación desde un asiento contable existente.
-        
-        Permite ejecutar un flujo de operaciones contables desde cualquier asiento
-        existente (factura, pago, nota de crédito, etc.) y continuar el flujo sin 
-        duplicar documentos ya existentes.
-        """
+    
+    def action_create_operation(self):
+        """Open wizard to create an operation from this entry"""
         self.ensure_one()
-        
-        # Datos básicos que podemos extraer del asiento actual
-        context = {
-            'default_move_id': self.id,
-            'default_partner_id': self.partner_id.id,
-            'default_amount': self.amount_total,
-            'default_ref': self.ref or self.name,
-            'default_move_type': self.move_type,
-            'default_currency_id': self.currency_id.id,
-        }
-        
-        # Abrimos el asistente para seleccionar el tipo de operación
         return {
-            'name': _('Create Operation from Journal Entry'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'account.move.operation.from.move',
+            'name': _('Create Operation From Entry'),
             'view_mode': 'form',
+            'res_model': 'account.move.operation.from.entry',
+            'view_id': self.env.ref('account_move_operation.view_account_move_operation_from_entry_form').id,
+            'type': 'ir.actions.act_window',
+            'context': {
+                'default_move_id': self.id,
+            },
             'target': 'new',
-            'context': context,
         }
-        
-    def button_create_operation_from_move(self):
-        """Botón para crear operación desde asiento contable.
-        
-        Este método es idéntico a action_create_operation_from_move pero se expone
-        como botón en la vista de formulario de asientos contables.
-        """
-        return self.action_create_operation_from_move()
+    
+    def action_view_operation(self):
+        """View the related operation"""
+        self.ensure_one()
+        if not self.operation_id:
+            return False
+            
+        return {
+            'name': _('Account Operation'),
+            'view_mode': 'form',
+            'res_model': 'account.move.operation',
+            'res_id': self.operation_id.id,
+            'type': 'ir.actions.act_window',
+        }
