@@ -23,7 +23,8 @@ class AccountMoveOperationActions(models.Model):
     )
     name = fields.Char(required=True, translate=True)
     active = fields.Boolean(
-        default=True, help="If unchecked, it will allow you to hide the action without removing it."
+        default=True,
+        help="If unchecked, it will allow you to hide the action without removing it.",
     )
     sequence = fields.Integer(default=10)
     company_id = fields.Many2one(
@@ -53,13 +54,19 @@ class AccountMoveOperationActions(models.Model):
         "being it a payment or invoice."
     )
     diff_partner = fields.Boolean(
-        string="Different Partner", help="Enables use of a different partner than the one set on the operation"
+        string="Different Partner",
+        help="Enables use of a different partner than the one set on the operation",
     )
     multicompany = fields.Boolean(
-        string="Multicompany", help="Enables use of a different company than the one set on the operation"
+        string="Multicompany",
+        help="Enables use of a different company than the one set on the operation",
     )
-    reconcile = fields.Boolean(help="Enable autoreconcile the created move with the selected bank statement.")
-    auto = fields.Boolean(default=True, help="Help simplify process avoiding using intermediary wizards.")
+    reconcile = fields.Boolean(
+        help="Enable autoreconcile the created move with the selected bank statement."
+    )
+    auto = fields.Boolean(
+        default=True, help="Help simplify process avoiding using intermediary wizards."
+    )
 
     @api.onchange("operation_type_id", "company_id")
     def _onchange_operation_type(self):

@@ -73,7 +73,7 @@
                                                 <field name="template_id" />
                                                 <field name="diff_partner"
                                                     invisible="not parent.diff_partner" />
-                                                <field name="multicompany" 
+                                                <field name="multicompany"
                                                     invisible="not parent.multicompany" />
                                             </group>
                                         </group>

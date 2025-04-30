@@ -4,3 +4,4 @@ access_account_move_operation_action_user,Full access on account.move.operation.
 access_account_move_operation_line_user,Full access on account.move.operation.line to accountant grp,model_account_move_operation_line,account.group_account_user,1,1,1,1
 access_account_move_operation_type_user,Full access on account.move.operation.type to accountant grp,model_account_move_operation_type,account.group_account_user,1,1,1,1
 access_account_move_operation_from_entry_line_user,Access on account.move.operation.from.entry.line to accountant grp,model_account_move_operation_from_entry_line,account.group_account_user,1,1,1,1
+access_account_move_operation_from_entry_user,Access on account.move.operation.from.entry to accountant grp,model_account_move_operation_from_entry,account.group_account_user,1,1,1,1

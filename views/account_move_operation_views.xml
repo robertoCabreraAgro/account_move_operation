@@ -166,5 +166,4 @@
         parent="account.menu_finance_entries"
         action="account_move_operation_action"
         sequence="400" />
-
 </odoo>

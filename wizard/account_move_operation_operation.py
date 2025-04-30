@@ -14,7 +14,9 @@ class AccountMoveOperationOperation(models.TransientModel):
         related="line_id.operation_id",
         readonly=True,
     )
-    available_company_ids = fields.Many2many("res.company", compute="_compute_available_company_ids")
+    available_company_ids = fields.Many2many(
+        "res.company", compute="_compute_available_company_ids"
+    )
     diff_company_id = fields.Many2one(
         "res.company",
         required=True,
@@ -26,14 +28,21 @@ class AccountMoveOperationOperation(models.TransientModel):
     def _compute_available_company_ids(self):
         for rec in self:
             rec.available_company_ids = [
-                Command.set(rec.line_id.action_id.operation_type_ids.mapped("company_id").ids)
+                Command.set(
+                    rec.line_id.action_id.operation_type_ids.mapped("company_id").ids
+                )
             ]
 
     @api.model
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
-        if self.env.context.get("active_model") == "account.move.operation.line" and "active_ids" in self.env.context:
-            line = self.env[self.env.context["active_model"]].browse(self.env.context["active_ids"])[:1]
+        if (
+            self.env.context.get("active_model") == "account.move.operation.line"
+            and "active_ids" in self.env.context
+        ):
+            line = self.env[self.env.context["active_model"]].browse(
+                self.env.context["active_ids"]
+            )[:1]
             defaults.update(
                 {
                     "line_id": line.id,
@@ -45,7 +54,9 @@ class AccountMoveOperationOperation(models.TransientModel):
         op_type = self.sudo().line_id.action_id.operation_type_ids.filtered(
             lambda ot: ot.company_id == self.diff_company_id
         )
-        operation = self.env["account.move.operation"].sudo().with_company(self.diff_company_id)
+        operation = (
+            self.env["account.move.operation"].sudo().with_company(self.diff_company_id)
+        )
         vals = {
             "operation_type_id": op_type.id,
             "partner_id": self.operation_id.partner_id.id,
